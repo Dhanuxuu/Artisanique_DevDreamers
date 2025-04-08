@@ -1,58 +1,102 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-@section('content')
-<div id="page-content" class="page-content" style="margin-top:-25px">
-    <div class="banner">
-        <div class="jumbotron jumbotron-bg text-center rounded-0"
-            style="background-image: url('assets/img/bg1.jpg');">
-            <div class="container">
-                <h1 class="pt-5">
-                    Login Page
-                </h1>
-                <p class="lead">
-                Discover unique, Handcrafted Treasures from local artisans, all in one place!
-                </p>
+  <!-- JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <!-- End JavaScript -->
 
-                <div class="card card-login mb-5">
-                    <div class="card-body">
-                        <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                            @csrf
-                            <div class="form-group row mt-3">
-                                <div class="col-md-12">
-                                    <input class="form-control" name="email" type="email" required="" placeholder="email">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-12 d-flex justify-content-between align-items-center">
-                                    <!-- <div class="checkbox">
-                                            <input id="checkbox0" type="checkbox" name="remember">
-                                            <label for="checkbox0" class="mb-0"> Remember Me? </label>
-                                        </div> -->
-                                    <!-- <a href="login.html" class="text-light"><i class="fa fa-bell"></i> Forgot password?</a> -->
-                                </div>
-                            </div>
-                            <div class="form-group row text-center mt-4">
-                                <div class="col-md-12">
-                                    <button type="submit" name="submit" class="btn btn-primary btn-block text-uppercase">Log
-                                        In</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/gpt.css">
+  <!-- End CSS -->
+
+</head>
+
+<body>
+<div class="chat">
+
+  <!-- Header -->
+  <div class="top">
+    <img src="{{asset('assets/img/logo/chat.jpg')}}" alt="Avatar">
+    <div>
+      <p>Artisanique Bot</p>
+      <small>Online</small>
     </div>
+  </div>
+  <!-- End Header -->
+
+  <!-- Chat -->
+  <div class="messages">
+    <div class="left message">
+      <img src="{{asset('assets/img/logo/bot.png')}}" alt="Avatar">
+      <p>Start chatting with Chat GPT AI below!!</p>
+    </div>
+  </div>
+  <!-- End Chat -->
+
+  <!-- Footer -->
+  <div class="bottom">
+    <form>
+      <input type="text" id="message" name="message" placeholder="Enter message..." autocomplete="off">
+      <button type="submit"></button>
+    </form>
+  </div>
+  <!-- End Footer -->
+
 </div>
-@endsection
+</body>
+
+<script>
+  //Broadcast messages
+  $("form").submit(function (event) {
+    event.preventDefault();
+
+    //Stop empty messages
+    if ($("form #message").val().trim() === '') {
+      return;
+    }
+
+    //Disable form
+    $("form #message").prop('disabled', true);
+    $("form button").prop('disabled', true);
+
+    $.ajax({
+      url: "/chat",
+      method: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: {
+        "model": "gpt-3.5-turbo",
+        "content": $("form #message").val()
+      }
+    }).done(function (res) {
+
+      //Populate sending message
+      $(".messages > .message").last().after('<div class="right message">' +
+        '<p>' + $("form #message").val() + '</p>' +
+        '<img src="{{asset('assets/img/logo/human.jpeg')}}" alt="Avatar">' +
+        '</div>');
+
+      //Populate receiving message
+      $(".messages > .message").last().after('<div class="left message">' +
+        '<img src="{{asset('assets/img/logo/bot.png')}}" alt="Avatar">' +
+        '<p>' + res + '</p>' +
+        '</div>');
+
+      //Cleanup
+      $("form #message").val('');
+      $(document).scrollTop($(document).height());
+
+      //Enable form
+      $("form #message").prop('disabled', false);
+      $("form button").prop('disabled', false);
+    });
+  });
+
+</script>
+</html>

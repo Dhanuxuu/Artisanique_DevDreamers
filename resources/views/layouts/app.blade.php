@@ -39,7 +39,7 @@
             <div class="container">
                 <!-- Navbar Brand -->
                 <a href="{{ url('/') }}" class="navbar-brand">
-                    <img src="{{ asset('assets/img/artisanique-high-resolution-logo.png') }}" alt="">
+                    <img src="{{ asset('assets/img/logo/logo.png') }}" alt="">
                 </a>
 
                 <!-- Toggle Button -->
@@ -80,6 +80,9 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('users.orders') }}">Transactions History</a>
+                                @if (Auth::user()->role == 'sellar')
+                                <a class="dropdown-item" href="{{ route('users.orders') }}">Sellar</a>
+                                @endif
                                 <a class="dropdown-item" href="{{route('users.settings')}}">Settings</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -92,12 +95,33 @@
                                 </form>
                             </div>
                           </li>
+                          @if (Auth::user()->role == 'sellar')
+                          <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Open your shop
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('sellars.allcategories') }}">Categories</a>
+                                <a class="dropdown-item" href="{{route('sellars.allproducts')}}">Products</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                </form>
+                            </div>
+                          </li>
+                            @endif
                         <li class="nav-item">
                             <a href="{{ route('products.cart') }}" class="nav-link" data-toggle="" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-shopping-basket"></i>
                             </a>
                           
                         </li>
+                        
                     @endguest
                     </ul>
                 </div>
@@ -168,6 +192,16 @@
                 </div>
                 <div class="col-md-3">
                      <h5>Get Our App</h5>
+                     <script
+                        src="https://app.wonderchat.io/scripts/wonderchat.js"
+                        data-name="wonderchat"
+                        data-address="app.wonderchat.io"
+                        data-id="cm986hi2k08ntoqqdsc1a8ewt"
+                        data-widget-size="normal"
+                        data-widget-button-size="normal"
+                    
+                        defer
+                    ></script>
                      <ul class="mb-0">
                          <li class="download-app">
                              <a href="#"><img src="assets/img/playstore.png"></a>

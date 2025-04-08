@@ -22,6 +22,8 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/about', [App\Http\Controllers\HomeController::class, 'about'])->name('about');
 Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact'])->name('contact');
+Route::get('/gpt', [App\Http\Controllers\HomeController::class, 'gpt'])->name('welcome');
+Route::post('/chat', 'App\Http\Controllers\ChatController');
 // Route::match(['get', 'post'], '/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix'=>'products'],function(){
@@ -51,6 +53,7 @@ Route::get('products/success', [App\Http\Controllers\Products\ProductsController
 Route::get('users/my-orders', [App\Http\Controllers\Users\UsersController::class, 'myOrders'])->name('users.orders')->middleware('auth:web');
 Route::get('users/settings', [App\Http\Controllers\Users\UsersController::class, 'settings'])->name('users.settings')->middleware('auth:web');
 Route::post('users/settings/{id}', [App\Http\Controllers\Users\UsersController::class, 'updateUserSettings'])->name('users.settings.update')->middleware('auth:web');
+// Route::post('users/settings/{id}', [App\Http\Controllers\Sellar\SellarController::class, 'updateSellarSettings'])->name('sellars.settings.update')->middleware('auth:web');
 
 
 //admin panel
@@ -58,4 +61,14 @@ Route::get('admin/login', [App\Http\Controllers\Admins\AdminsController::class, 
 Route::post('admin/login', [App\Http\Controllers\Admins\AdminsController::class, 'checkLogin'])->name('check.login');
 Route::get('admin/index', [App\Http\Controllers\Admins\AdminsController::class, 'index'])->name('admins.dashboard');
 
+//categories
+Route::get('sellars/allcategories', [App\Http\Controllers\Sellar\SellarController::class, 'displayCategories'])->name('sellars.allcategories');
+Route::get('sellars/createcategories', [App\Http\Controllers\Sellar\SellarController::class, 'createCategories'])->name('sellars.create');
+Route::post('sellars/createcategories', [App\Http\Controllers\Sellar\SellarController::class, 'storeCategories'])->name('sellars.store');
+Route::get('sellars/editcategories/{id}', [App\Http\Controllers\Sellar\SellarController::class, 'editCategories'])->name('sellars.edit');
+Route::post('sellars/updatecategories/{id}', [App\Http\Controllers\Sellar\SellarController::class, 'updateCategories'])->name('sellars.update');
+Route::get('sellars/deletecategories/{id}', [App\Http\Controllers\Sellar\SellarController::class, 'deleteCategories'])->name('sellars.delete');
+
+//products
+Route::get('sellars/allproducts', [App\Http\Controllers\Sellar\SellarController::class, 'displayProducts'])->name('sellars.allproducts');
 

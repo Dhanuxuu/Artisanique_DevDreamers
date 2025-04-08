@@ -123,6 +123,21 @@
                             </div>
                             </div>
 
+                            <div class="form-group row mt-3">
+                                <div class="col-md-12">
+                                    <select class="form-control @error('role') is-invalid @enderror" id="role" name="role" required>
+                                        <option value="" disabled {{ old('role') ? '' : 'selected' }}>Select your role</option>
+                                        <option value="buyer" {{ old('role') == 'buyer' ? 'selected' : '' }}>To buy crafts</option>
+                                        <option value="sellar" {{ old('role') == 'sellar' ? 'selected' : '' }}>To sell crafts</option>
+                                    </select>
+                                    @error('role')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
 
                             <div class="form-group row">
                                 <div class="col-md-12">

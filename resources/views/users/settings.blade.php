@@ -58,17 +58,43 @@
                                     <div class="col">
                                         <input class="form-control"  name="phone_number" value="{{ $user->phone_number }}" placeholder="Phone Number" type="tel">
                                     </div>
-                                </div>
+                                </div><br>
                                 <!-- <div class="form-group">
                                     <input class="form-control" placeholder="Password" type="password">
                                 </div> -->
+                                @if (Auth::user()->role == 'sellar')
+                                <h5 class="mb-3">SHOP DETAILS</h5>
+                                <div class="form-group row">
+                                    <div class="col">
+                                        <input class="form-control" name="shopname" value="{{ $user->shopname }}" placeholder="Shop Name" type="text">
+                                    </div>
+                                   
+                                </div>
+                               
+                                <div class="form-group">
+                                    <textarea class="form-control"  name="BankAccountName"  placeholder="Bank Account Name">{{ $user->BankAccountName }}</textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input class="form-control"  name="accnum" value="{{ $user->accnum }}" placeholder="Account Number" type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <input class="form-control"  name="bankname" value="{{ $user->bankname }}" placeholder="Bank Name" type="text">
+                                </div>
+
+                                <div class="form-group">
+                                    <input class="form-control"  name="branch" value="{{ $user->branch }}" placeholder="Branch Name" type="text">
+                                </div>
+
+                                @endif
                                 <div class="form-group text-right">
                                     <button type="submit" name="submit" class="btn btn-primary">UPDATE</button>
                                     <div class="clearfix">
                                 </div>
                             </fieldset>
                         </form>
-                        <!-- Bill Detail of the Page end -->
+                        <br>
                     </div>
                 </div>
             </div>
